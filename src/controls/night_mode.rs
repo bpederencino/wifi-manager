@@ -129,10 +129,10 @@ impl NightModeManager {
 impl Drop for NightModeManager {
     fn drop(&mut self) {
         let _ = self.sender.take();
-        if let Some(handle) = self.wayland_handle.take() {
-            if let Err(e) = handle.join() {
-                log::error!("Failed to join Wayland thread: {:?}", e);
-            }
+        if let Some(handle) = self.wayland_handle.take()
+            && let Err(e) = handle.join()
+        {
+            log::error!("Failed to join Wayland thread: {:?}", e);
         }
     }
 }

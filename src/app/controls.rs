@@ -146,8 +146,6 @@ pub fn setup_controls(widgets: &PanelWidgets) {
             
             let icon_name = if state.muted {
                 "audio-volume-muted-symbolic"
-            } else if state.percent < 1.0 {
-                "audio-volume-low-symbolic"
             } else if state.percent < 33.0 {
                 "audio-volume-low-symbolic"
             } else if state.percent < 66.0 {

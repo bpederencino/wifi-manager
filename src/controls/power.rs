@@ -40,6 +40,8 @@ pub fn logout() -> Result<(), String> {
         execute_logout_command("swaymsg", &["exit"])
     } else if desktop.contains("river") {
         execute_logout_command("riverctl", &["exit"])
+    } else if desktop.contains("adamantwc") {
+        execute_logout_command("adamantctl", &["action", "quit"])
     } else {
         Err(format!("Unsupported or unknown Wayland compositor for logout: {}", desktop))
     }

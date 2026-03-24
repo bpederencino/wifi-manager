@@ -8,6 +8,10 @@ use std::collections::HashMap;
 use zbus::proxy;
 use zbus::zvariant::{OwnedObjectPath, OwnedValue};
 
+/// Nested map type returned by `GetManagedObjects`:
+/// `{ object_path: { interface_name: { property: value } } }`
+type ManagedObjects = HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>;
+
 // ============================================================================
 // D-Bus Proxy Traits for BlueZ
 // ============================================================================
@@ -136,14 +140,7 @@ pub(crate) trait BluezObjectManager {
     /// Get all managed objects with their interfaces and properties.
     ///
     /// Returns: `{ object_path: { interface_name: { property: value } } }`
-    fn get_managed_objects(
-        &self,
-    ) -> zbus::Result<
-        HashMap<
-            OwnedObjectPath,
-            HashMap<String, HashMap<String, OwnedValue>>,
-        >,
-    >;
+    fn get_managed_objects(&self) -> zbus::Result<ManagedObjects>;
 
     /// Signal: new interfaces appeared on an object.
     #[zbus(signal)]

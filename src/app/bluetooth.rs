@@ -67,10 +67,8 @@ pub(super) fn setup_bluetooth(widgets: &PanelWidgets, state: Rc<RefCell<AppState
                     let state = Rc::clone(&state);
                     let btn = btn.clone();
                     glib::spawn_future_local(async move {
-                        if !btn.is_active() {
-                            if let Some(bt) = get_bt(&state) {
-                                let _ = bt.stop_discovery().await;
-                            }
+                        if !btn.is_active() && let Some(bt) = get_bt(&state) {
+                            let _ = bt.stop_discovery().await;
                         }
                     });
                     return;
@@ -468,10 +466,10 @@ pub(super) async fn resume_bt_background_tasks(
 }
 
 pub(super) async fn stop_bt_discovery(state: Rc<RefCell<AppState>>) {
-    if let Some(bt) = get_bt(&state) {
-        if let Err(e) = bt.stop_discovery().await {
-            log::warn!("BT discovery stop failed: {e}");
-        }
+    if let Some(bt) = get_bt(&state)
+        && let Err(e) = bt.stop_discovery().await
+    {
+        log::warn!("BT discovery stop failed: {e}");
     }
 }
 
@@ -653,10 +651,8 @@ async fn run_bt_scan_burst(
         refresh_bt_list(&state, &list_box, &status).await;
     }
 
-    if started_discovery {
-        if let Err(e) = bt.stop_discovery().await {
-            log::warn!("BT discovery stop failed: {e}");
-        }
+    if started_discovery && let Err(e) = bt.stop_discovery().await {
+        log::warn!("BT discovery stop failed: {e}");
     }
 
     if let Some(ui) = manual_ui {

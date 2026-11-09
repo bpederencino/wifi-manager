@@ -4,7 +4,7 @@
 //! - `scanning` — scan-on-show, initial scan, scan button
 //! - `connection` — WiFi toggle, network click, password dialog
 //! - `live_updates` — D-Bus signal subscriptions for real-time changes
-//! - `shortcuts` — Escape key, reload polling
+//! - `shortcuts` — Escape key, hide on focus loss, reload polling
 
 mod bluetooth;
 mod bt_live_updates;
@@ -96,6 +96,7 @@ pub fn setup(
     }
     let reload_requested = panel_state.reload_requested.clone();
     shortcuts::setup_escape_key(widgets, panel_state.clone());
+    shortcuts::setup_hide_on_focus_loss(widgets, panel_state.clone());
     shortcuts::setup_reload_on_request(widgets, Rc::clone(&state), reload_requested);
     scanning::setup_initial_state(widgets, Rc::clone(&state));
     controls::setup_controls(widgets);
